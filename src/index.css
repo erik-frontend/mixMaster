@@ -6,6 +6,11 @@
     box-sizing: border-box;
 }
 
+img {
+    max-width: 100%;
+    display: block;
+}
+
 html {
     font-size: 100%;
 }
@@ -293,4 +298,9 @@ PROJECT CSS
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 5rem 2rem;
+}
+
+.form-section {
+    padding: 20px;
+    text-align: center;
 }
