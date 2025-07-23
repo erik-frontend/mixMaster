@@ -5,7 +5,9 @@ import Contact from "./pages/Contact"
 import Home from "./pages/Home"
 import Error from "./pages/Error"
 import Landing from "./pages/Landing"
-
+import {loader as landingLoader} from "./pages/Landing"
+import Coctail from "./pages/Coctail"
+import SinglePageError from "./pages/SinglePageError"
 
 function App() {
 
@@ -17,19 +19,24 @@ function App() {
       children: [
         {
           index: true,
-          element: <Landing />
+          element: <Landing />,
+          loader: landingLoader,
+          errorElement: <SinglePageError/>
         },
         {
-          path: "coctail",
-          element: <Layout />,
+          path: "coctail/:id",
+          element: <Coctail />,
+          errorElement: <SinglePageError/>
         },
         {
           path: "about",
           element: <About />,
+          errorElement: <SinglePageError/>
         },
         {
           path: "contact",
           element: <Contact />,
+          errorElement: <SinglePageError/>
         }
       ]
     }

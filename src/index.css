@@ -304,3 +304,13 @@ PROJECT CSS
     padding: 20px;
     text-align: center;
 }
+
+.page-error {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+    gap: 20px;
+}
