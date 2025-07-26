@@ -6,6 +6,7 @@ import Home from "./pages/Home"
 import Error from "./pages/Error"
 import Landing from "./pages/Landing"
 import {loader as landingLoader} from "./pages/Landing"
+import {loader as singleCoctailLoader} from "./pages/Coctail"
 import Coctail from "./pages/Coctail"
 import SinglePageError from "./pages/SinglePageError"
 
@@ -26,7 +27,8 @@ function App() {
         {
           path: "coctail/:id",
           element: <Coctail />,
-          errorElement: <SinglePageError/>
+          errorElement: <SinglePageError/>,
+          loader: singleCoctailLoader,
         },
         {
           path: "about",
