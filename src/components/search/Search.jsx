@@ -2,21 +2,26 @@ import React from 'react'
 import Wrapper from '../../wrappers/Search'
 import { useNavigation, Form } from 'react-router-dom'
 
-const Search = () => {
+const Search = ({searchTerm}) => {
 
-    // const navigation = useNavigation()
+    const navigation = useNavigation()
 
-    // const isSubmitting = navigation.state === "submitting"
+    const isSubmitting = navigation.state === "submitting"
 
     return (
         <Wrapper>
-            <form className="form">
-                <input type="search" className="form-input" name='search' />
+            <Form className="form">
+                <input 
+                type="search" 
+                className="form-input" 
+                name='search'
+                defaultValue={searchTerm}
+                placeholder='search coctails...'
+                />
                 <button className="btn" type='submit'>
-                    {/* {isSubmitting ? "searching" : "search"} */}
-                    search
+                    {isSubmitting ? "searching" : "search"}
                 </button>
-            </form>
+            </Form>
         </Wrapper>
     )
 }

@@ -8,6 +8,8 @@ import CoctailList from '../components/coctails/CoctailList'
 const coctailSearchUrl = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s="
 // console.log(coctailSearchUrl);
 
+const defaultUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail"
+
 const searchCoctailsQuery = (searchTerm) => {
     return {
         queryKey: ["search", searchTerm || "all"],
@@ -22,13 +24,19 @@ const searchCoctailsQuery = (searchTerm) => {
     }
 }
 
-export const loader = async () => {
-    const searchTerm = "Margarita"
-    const response = await axios.get(`${coctailSearchUrl}${searchTerm}`)
+export const loader = async ({request}) => {
+    const url = new URL(request.url)
+    const searchTerm = url.searchParams.get("search")
+    const apiUrl = searchTerm ? `${coctailSearchUrl}${searchTerm}` : defaultUrl
+    const response = await axios.get(apiUrl)
 
     // console.log(response);
 
-    return { drinks: response.data.drinks, searchTerm }
+    const drinksData = response.data.drinks
+
+    const drinks = Array.isArray(drinksData) ? drinksData : []
+
+    return { drinks, searchTerm }
 }
 
 const Landing = () => {
@@ -39,7 +47,7 @@ const Landing = () => {
     
     return (
         <div>
-            <Search />
+            <Search searchTerm={searchTerm}/>
             <CoctailList drinks={drinks}/>
         </div>
     )

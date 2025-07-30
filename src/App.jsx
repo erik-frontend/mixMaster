@@ -9,6 +9,15 @@ import {loader as landingLoader} from "./pages/Landing"
 import {loader as singleCoctailLoader} from "./pages/Coctail"
 import Coctail from "./pages/Coctail"
 import SinglePageError from "./pages/SinglePageError"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5
+    }
+  }
+})
 
 function App() {
 
@@ -45,9 +54,9 @@ function App() {
   ])
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <RouterProvider router={router}/>
-    </>
+    </QueryClientProvider>
   )
 }
 
