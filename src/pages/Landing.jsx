@@ -11,44 +11,52 @@ const coctailSearchUrl = "https://www.thecocktaildb.com/api/json/v1/1/search.php
 const defaultUrl = "https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocktail"
 
 const searchCoctailsQuery = (searchTerm) => {
+    const apiUrl = searchTerm
+        ? `${coctailSearchUrl}${searchTerm}`
+        : defaultUrl
     return {
-        queryKey: ["search", searchTerm || "all"],
+        queryKey: ["coctails", searchTerm || "default"],
         queryFn: async () => {
-            const response = await axios.get(`${coctailSearchUrl}${searchTerm}`)
-            console.log(response.data);
-            if (!response.data.drinks || typeof response.data.drinks !== "object") {
-                return []
-            }
-            return response.data
+            const response = await axios.get(apiUrl)
+            // console.log(response.data);
+            const drinksData = response.data.drinks
+            return Array.isArray(drinksData) ? drinksData : []
         }
     }
 }
 
-export const loader = async ({request}) => {
-    const url = new URL(request.url)
-    const searchTerm = url.searchParams.get("search")
-    const apiUrl = searchTerm ? `${coctailSearchUrl}${searchTerm}` : defaultUrl
-    const response = await axios.get(apiUrl)
-
-    // console.log(response);
-
-    const drinksData = response.data.drinks
-
-    const drinks = Array.isArray(drinksData) ? drinksData : []
-
-    return { drinks, searchTerm }
-}
+export const loader =
+    (queryClient) =>
+        async ({ request }) => {
+            const url = new URL(request.url)
+            const searchTerm = url.searchParams.get("search") || ""
+            await queryClient.ensureQueryData(searchCoctailsQuery(searchTerm))
+            // console.log(response);
+            return { searchTerm }
+        }
 
 const Landing = () => {
 
-    const { drinks, searchTerm } = useLoaderData()
+    const { searchTerm } = useLoaderData()
 
-    // console.log(drinks);
-    
+    const {
+        data: drinks = [],
+        isLoading,
+        isError,
+    } = useQuery(searchCoctailsQuery(searchTerm))
+
+    if(isLoading) {
+        return <p style={{textAlign:"center"}}>Loading coctails...</p>
+    }
+
+    if(isError) {
+        return <p style={{textAlign:"center", color:"red"}}>Failed to load coctails</p>
+    }
+
     return (
         <div>
-            <Search searchTerm={searchTerm}/>
-            <CoctailList drinks={drinks}/>
+            <Search searchTerm={searchTerm} />
+            <CoctailList drinks={drinks} />
         </div>
     )
 }

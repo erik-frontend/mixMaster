@@ -30,7 +30,7 @@ function App() {
         {
           index: true,
           element: <Landing />,
-          loader: landingLoader,
+          loader: landingLoader(queryClient),
           errorElement: <SinglePageError/>
         },
         {
