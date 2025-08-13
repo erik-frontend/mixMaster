@@ -37,7 +37,7 @@ function App() {
           path: "coctail/:id",
           element: <Coctail />,
           errorElement: <SinglePageError/>,
-          loader: singleCoctailLoader,
+          loader: singleCoctailLoader(queryClient),
         },
         {
           path: "about",
